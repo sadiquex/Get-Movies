@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { createElement as $ } from "react";
+import { useState, useEffect } from "react";
+import Movie from "./Movie";
+import { MoviesContainer } from "./MovieStyles";
+import Filter from "./Filter";
+const App = () => {
+  // initially, set popular to an empty array of movies
+  const [Popular, setPopular] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  // the activeGenre is 0 because the genres are indicated by numbers in the api docs
+  // 0 indicating all genres
+  const [activeGenre, setactiveGenre] = useState(0);
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  // run fetch popular when the component gets rendered out
+  useEffect(() => {
+    fetchPopular();
+  }, []);
+
+  // get popular movies
+  const fetchPopular = async () => {
+    const data = await fetch(
+      "https://api.themoviedb.org/3/movie/popular?api_key=b771f5d4d53ab4fbdbdafcb462a17175&language=en-US&page=1"
+    );
+    const movies = await data.json();
+    // results contains the movies
+    setPopular(movies.results);
+    setFiltered(movies.results);
+  };
+
+  return $(
+    "div",
+    { className: "App" },
+    $(Filter, { Popular, setFiltered, activeGenre,setactiveGenre }),
+    // popular movies
+    $(
+      MoviesContainer,
+      { className: "popular-movies" },
+      Popular.map((movie) => $(Movie, { key: movie.id, movie }))
+    )
   );
-}
+};
 
 export default App;
