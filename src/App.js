@@ -3,15 +3,17 @@ import { useState, useEffect } from "react";
 import Movie from "./Movie";
 import { MoviesContainer } from "./MovieStyles";
 import Filter from "./Filter";
+import { motion } from "framer-motion";
 const App = () => {
   // initially, set popular to an empty array of movies
-  const [Popular, setPopular] = useState([]);
+  const [popular, setPopular] = useState([]);
   const [filtered, setFiltered] = useState([]);
   // the activeGenre is 0 because the genres are indicated by numbers in the api docs
   // 0 indicating all genres
   const [activeGenre, setactiveGenre] = useState(0);
 
   // run fetch popular when the component gets rendered out
+  // get the data as soon as the page renders
   useEffect(() => {
     fetchPopular();
   }, []);
@@ -24,18 +26,19 @@ const App = () => {
     const movies = await data.json();
     // results contains the movies
     setPopular(movies.results);
+    // duplicate array to handle filter according to genre
     setFiltered(movies.results);
   };
 
   return $(
     "div",
     { className: "App" },
-    $(Filter, { Popular, setFiltered, activeGenre,setactiveGenre }),
+    $(Filter, { popular, setFiltered, activeGenre, setactiveGenre }),
     // popular movies
     $(
       MoviesContainer,
       { className: "popular-movies" },
-      Popular.map((movie) => $(Movie, { key: movie.id, movie }))
+      filtered.map((movie) => $(Movie, { key: movie.id, movie }))
     )
   );
 };
