@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Movie from "./Movie";
 import { MoviesContainer } from "./MovieStyles";
 import Filter from "./Filter";
-import { motion } from "framer-motion";
 const App = () => {
   // initially, set popular to an empty array of movies
   const [popular, setPopular] = useState([]);
@@ -37,7 +36,10 @@ const App = () => {
     // popular movies
     $(
       MoviesContainer,
-      { className: "popular-movies" },
+      {
+        className: "popular-movies",
+        transition: { layout: { duration: 0.5 } },
+      },
       filtered.map((movie) => $(Movie, { key: movie.id, movie }))
     )
   );

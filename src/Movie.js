@@ -9,7 +9,13 @@ import {
 const Movie = ({ movie }) => {
   return $(
     MoviesCard,
-    null,
+    {
+      animate: { opacity: 1 },
+      initial: { opacity: 0 },
+      exit: { opacity: 0 },
+      layout: {},
+      whileHover: { scale: 1.1 },
+    },
     $(MovieTitle, null, movie.title),
     $(MovieThumbnail, {
       src: `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`,

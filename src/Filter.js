@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { createElement as $ } from "react";
-import { Button } from "./FilterStyles";
+import { Button, FilterContainer } from "./FilterStyles";
 
 const Filter = ({ setactiveGenre, activeGenre, setFiltered, popular }) => {
   useEffect(() => {
@@ -17,7 +17,7 @@ const Filter = ({ setactiveGenre, activeGenre, setFiltered, popular }) => {
   }, [activeGenre]);
 
   return $(
-    "div",
+    FilterContainer,
     { className: "filter-container" },
     // the numbers here are from the api docs, these genres have these genres respectively
     $(
